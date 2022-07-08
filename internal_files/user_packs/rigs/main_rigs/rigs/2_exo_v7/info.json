@@ -1,0 +1,8 @@
+{
+    "rig_name": "ExoticBuilder",
+	"base_rig": "Ice Cube",
+	"base_rig_vers": "1.1.0",
+    "author": "DarthLilo",
+    "rig_version": "v7",
+	"has_baked": "True"
+}

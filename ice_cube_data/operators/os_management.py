@@ -8,7 +8,7 @@ import zipfile
 import shutil
 import distutils.dir_util
 
-from ice_cube import root_folder
+from ice_cube import root_folder, latest_dlc, github_url
 
 from ice_cube_data.utils.ui_tools import CustomErrorBox
 from ice_cube_data.utils.file_manage import ClearDirectory, getFiles
@@ -54,7 +54,7 @@ def install_update_func(self, context):
 
     download_file_loc = str(download_folder+"/latest_release.zip")
 
-    github_repo = json.loads(request.urlopen("https://api.github.com/repos/TheMostEvil/IceCube/releases/latest").read().decode())
+    github_repo = json.loads(request.urlopen(github_url).read().decode())
     github_zip = github_repo['zipball_url']
 
     #download the zip
@@ -234,7 +234,7 @@ def download_dlc_func(self, context, dlc_id):
         obj = context.object
         dlc_textbox = obj.dlc_name_load
         #gets the latest data from the github "dlc_list.json" file
-        github_repo = json.loads(request.urlopen("https://raw.githubusercontent.com/DarthLilo/ice-cube-beta/master/dlc_list.json").read().decode())
+        github_repo = json.loads(request.urlopen(latest_dlc).read().decode())
         #checks if you entered the name of a valid DLC
         if obj.get("dlc_name_load"):
             if obj.get("dlc_name_load") == "":

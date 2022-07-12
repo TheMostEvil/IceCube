@@ -2,7 +2,7 @@ from urllib import request
 import bpy
 import json
 
-from ice_cube import root_folder, github_url
+from ice_cube import root_folder, github_url,latest_dlc ,dlc_id,dlc_type,dlc_author
 
 from ice_cube_data.utils.general_func import IsVersionUpdated, getIndexCustom
 from ice_cube_data.utils.ui_tools import CustomErrorBox
@@ -44,9 +44,12 @@ def check_for_updates_func(self, context, current_vers, update_avail):
 
         return{'FINISHED'}
 
-def refresh_dlc_func(self, context, dlc_id, dlc_type, dlc_author):
+
+
+
+def refresh_dlc_func(self, context):
         #checks github for the latest DLCs
-        github_repo = json.loads(request.urlopen("https://raw.githubusercontent.com/DarthLilo/ice-cube-beta/master/dlc_list.json").read().decode())
+        github_repo = json.loads(request.urlopen(latest_dlc).read().decode())
         dlc_id.clear()
         dlc_type.clear()
         dlc_author.clear()
@@ -57,6 +60,8 @@ def refresh_dlc_func(self, context, dlc_id, dlc_type, dlc_author):
             dlc_author.append(github_repo[dlc_number]['author'])
 
         return{'FINISHED'}
+
+
 
 classes = [
            ]

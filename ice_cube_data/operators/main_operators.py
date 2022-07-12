@@ -5,7 +5,7 @@ from bpy.props import EnumProperty
 
 
 #Custom Functions
-from ice_cube import root_folder
+from ice_cube import root_folder, dlc_id,dlc_type,dlc_author
 
 from ice_cube_data.utils.general_func import GetListIndex, IsVersionUpdated
 from ice_cube_data.utils.file_manage import getFiles, ClearDirectory, GetRootFolder
@@ -301,9 +301,7 @@ class delete_backup(bpy.types.Operator):
         delete_backup_func(self, context)
         return{'FINISHED'}
 
-dlc_id = []
-dlc_type = []
-dlc_author = []
+
 
 class refresh_dlc(bpy.types.Operator):
     """Checks the Ice Cube GitHub for new DLC"""
@@ -312,7 +310,9 @@ class refresh_dlc(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        refresh_dlc_func(self, context, dlc_id, dlc_type, dlc_author)
+        refresh_dlc_func(self, context)
+
+        print(f"DLC IDs : {dlc_id}\nDLC TYPE : {dlc_type}\nDLC AUTHOR : {dlc_author}")
         return{'FINISHED'}
 
 class download_dlc(bpy.types.Operator):

@@ -6,7 +6,7 @@ from bpy.props import EnumProperty
 from bpy.types import WindowManager
 from sys import platform
 
-from ice_cube import root_folder
+from ice_cube import root_folder, dlc_id,dlc_type,dlc_author
 
 #Custom Files
 from ice_cube_data.properties import properties
@@ -236,7 +236,7 @@ class IC_Panel(bpy.types.Panel):
             if obj.get("ipaneltab5") == 1: #Parenting
                 parenting.parenting_UI(self, context, layout, properties.global_rig_baked)
             if obj.get("ipaneltab5") == 2: #Downloads
-                downloads.downloads_UI(self, context, layout, obj, properties.update_available, getFiles, GetListIndex, main_operators.dlc_id, main_operators.dlc_type, main_operators.dlc_author)
+                downloads.downloads_UI(self, context, layout, obj, properties.update_available, getFiles, GetListIndex, dlc_id, dlc_type, dlc_author)
 
 def menu_function_thing(self, context):
     pcoll = preview_collections["main"]

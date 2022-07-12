@@ -12,12 +12,31 @@ bl_info ={
 import bpy
 import importlib
 import sys
-from os import path
+import os
 
-root_folder = path.dirname(path.abspath(__file__))
+#File Variables
+root_folder = os.path.dirname(os.path.abspath(__file__))
 github_url = "https://api.github.com/repos/TheMostEvil/IceCube/releases/latest"
+latest_dlc = "https://raw.githubusercontent.com/TheMostEvil/IceCube/master/ice_cube_data/dlc_list.json"
+dlc_id = []
+dlc_type = []
+dlc_author = []
 
-sys.path.append(path.dirname(path.abspath(__file__)))
+#Folder Creation
+required_dirs = ["user_packs", "user_packs/rigs", "user_packs/inventory"]
+for dir in required_dirs:
+    dir_path = os.path.normpath(f"{root_folder}/ice_cube_data/internal_files/{dir}")
+    if os.path.exists(dir_path):
+        print(f"Found path {dir_path}")
+    else:
+        os.mkdir(dir_path)
+        print(f"Made directory {dir_path}")
+
+
+#Path Appending
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+
 
 #Import Files
 from . import main

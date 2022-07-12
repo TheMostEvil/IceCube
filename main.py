@@ -6,23 +6,30 @@ from bpy.props import EnumProperty
 from bpy.types import WindowManager
 from sys import platform
 
-#Custom Libraries
-from .defs import isRigSelected, main_face, getFiles, GetListIndex
-from . import inventory_system
-from . import operators
-from . import properties
+from ice_cube import root_folder
+
+#Custom Files
+from ice_cube_data.properties import properties
+from ice_cube_data.operators import main_operators
+from ice_cube_data.systems import inventory_system, skin_downloader
+
+
+#Custom Functions
+from ice_cube_data.utils.selectors import isRigSelected, main_face
+from ice_cube_data.utils.file_manage import getFiles
+from ice_cube_data.utils.general_func import GetListIndex
 
 #UI Panels
-from .ui_files import credits_info
+from ice_cube_data.ui import credits_info
+from ice_cube_data.ui.main import bone_layers, general_settings
+from ice_cube_data.ui.customization import custom_general, mesh, misc
+from ice_cube_data.ui.materials import skin_material, eye_material, misc_material
+from ice_cube_data.ui.advanced import dlc_ui, parenting, downloads
 
-from .ui_files.main import bone_layers, general_settings
-from .ui_files.customization import custom_general, mesh, misc
-from .ui_files.materials import skin_material, eye_material, misc_material
-from .ui_files.advanced import dlc_ui, parenting, downloads
+
 
 #File Variables
 rig_id = "ice_cube"
-script_file = script_file = os.path.realpath(__file__)
 
 #InFileDefs
 def presets_menu(self, context):
@@ -32,13 +39,11 @@ def presets_menu(self, context):
     if context is None:
         return enum_items
 
-
-    script_file = os.path.realpath(__file__)
     try:
-        selected_file = operators.files_list[context.scene.get("selected_asset")]
-        thumbnail_directory = os.path.dirname(script_file)+"/internal_files/user_packs/rigs/"+selected_file+"/thumbnails"
+        selected_file = main_operators.files_list[context.scene.get("selected_asset")]
+        thumbnail_directory = root_folder+"/ice_cube_data/internal_files/user_packs/rigs/"+selected_file+"/thumbnails"
     except:
-        thumbnail_directory = os.path.dirname(script_file)+"/internal_files/important/thumbnails"
+        thumbnail_directory = root_folder+"/ice_cube_data/internal_files/important/thumbnails"
 
     filepath  = thumbnail_directory
 
@@ -79,12 +84,11 @@ def inventory_menu(self, context):
         return enum_items
 
 
-    script_file = os.path.realpath(__file__)
     try:
         selected_file = inventory_system.inv_files_list[context.scene.get("selected_inv_asset")]
-        thumbnail_directory = os.path.dirname(script_file)+"/internal_files/user_packs/inventory/"+selected_file+"/thumbnails"
+        thumbnail_directory = root_folder+"/ice_cube_data/internal_files/user_packs/inventory/"+selected_file+"/thumbnails"
     except:
-        thumbnail_directory = os.path.dirname(script_file)+"/internal_files/important/thumbnails"
+        thumbnail_directory = root_folder+"/ice_cube_data/internal_files/important/thumbnails"
 
     filepath  = thumbnail_directory
 
@@ -124,8 +128,8 @@ def skins_menu(self, context):
     if context is None:
         return enum_items
 
-    script_file = os.path.realpath(__file__)
-    skin_path = os.path.dirname(script_file)+"/internal_files/skins"
+
+    skin_path = root_folder+"/ice_cube_data/internal_files/skins"
 
     filepath  = skin_path
 
@@ -226,13 +230,13 @@ class IC_Panel(bpy.types.Panel):
         if obj.get("ipaneltab1") == 3: #Advanced
             if obj.get("ipaneltab5") == 0: #DLC
                 if obj.get("ipaneltab6") == 0: #Assets
-                    dlc_ui.dlc_assets_UI(self, context, script_file, layout, inventory_system.inv_files_list)
+                    dlc_ui.dlc_assets_UI(self, context, layout, inventory_system.inv_files_list)
                 if obj.get("ipaneltab6") == 1: #Presets
-                    dlc_ui.dlc_presets_UI(self, context, script_file, layout, operators.files_list, properties.global_rig_baked)
+                    dlc_ui.dlc_presets_UI(self, context, layout, main_operators.files_list, properties.global_rig_baked)
             if obj.get("ipaneltab5") == 1: #Parenting
                 parenting.parenting_UI(self, context, layout, properties.global_rig_baked)
             if obj.get("ipaneltab5") == 2: #Downloads
-                downloads.downloads_UI(self, context, layout, obj, script_file, properties.update_available, getFiles, GetListIndex, operators.dlc_id, operators.dlc_type, operators.dlc_author)
+                downloads.downloads_UI(self, context, layout, obj, properties.update_available, getFiles, GetListIndex, main_operators.dlc_id, main_operators.dlc_type, main_operators.dlc_author)
 
 def menu_function_thing(self, context):
     pcoll = preview_collections["main"]
@@ -266,7 +270,7 @@ class ToolsAppendMenu(bpy.types.Panel):
         obj = context.object
         row = layout.row()
 
-        dlc_ui.dlc_presets_UI(self, context, script_file, layout, operators.files_list, properties.global_rig_baked)
+        dlc_ui.dlc_presets_UI(self, context, layout, main_operators.files_list, properties.global_rig_baked)
 
 
 
@@ -278,7 +282,7 @@ classes = [IC_Panel,
            ]
            
 modules = (
-            operators,
+            main_operators,
           )
 
 preview_collections = {}
@@ -295,7 +299,7 @@ def register():
 
     pcoll = bpy.utils.previews.new()
     
-    my_icons_dir = os.path.join(os.path.dirname(__file__), "icons")
+    my_icons_dir = os.path.normpath(f"{root_folder}/ice_cube_data/internal_files/icons")
     pcoll.load("DarthLilo", os.path.join(my_icons_dir, "DarthLilo.png"), 'IMAGE')
     pcoll.load("Alex", os.path.join(my_icons_dir, "Alex.png"), 'IMAGE')
     pcoll.load("Steve", os.path.join(my_icons_dir, "Steve.png"), 'IMAGE')
@@ -321,7 +325,7 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
     bpy.types.VIEW3D_MT_add.append(menu_function_thing)
-        
+
 def unregister():
     from bpy.types import WindowManager
     

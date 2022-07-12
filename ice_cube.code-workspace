@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.autoComplete.extraPaths": [
+			"E:/visual_studio_code_stuff/fake_bpy_modules_3.2-20220615",
+			"C:/Users/darth/AppData/Roaming/Blender Foundation/Blender/3.2/scripts/addons"
+		],
+		"python.analysis.extraPaths": [
+			"E:/visual_studio_code_stuff/fake_bpy_modules_3.2-20220615",
+			"C:/Users/darth/AppData/Roaming/Blender Foundation/Blender/3.2/scripts/addons"
+		]
+	}
+}

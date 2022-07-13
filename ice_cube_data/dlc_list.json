@@ -4,6 +4,7 @@
         "dlc_name" : "Lilo Preset",
         "dlc_type" : "rigs",
         "author" : "DarthLilo",
+        "dlc_date" : "2022-6-3",
         "download_link" : "https://www.dropbox.com/s/hz7i7qd1n501ono/lilo_preset.zip?dl=1"
     },
     {
@@ -11,6 +12,7 @@
         "dlc_name" : "Beta Testers DLC",
         "dlc_type" : "rigs",
         "author" : "IC Beta Testers",
+        "dlc_date" : "2022-6-4",
         "download_link" : "https://www.dropbox.com/s/f3dhnsfkjhq0n7z/beta_tester_dlc.zip?dl=1"
     },
     {
@@ -18,6 +20,7 @@
         "dlc_name" : "3D Armor",
         "dlc_type" : "inventory",
         "author" : "DarthLilo",
+        "dlc_date" : "2022-6-3",
         "download_link" : "https://www.dropbox.com/s/u668hpux9pblie6/3D_Armor.zip?dl=1"
     }
 ]

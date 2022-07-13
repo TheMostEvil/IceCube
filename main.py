@@ -236,7 +236,7 @@ class IC_Panel(bpy.types.Panel):
             if obj.get("ipaneltab5") == 1: #Parenting
                 parenting.parenting_UI(self, context, layout, properties.global_rig_baked)
             if obj.get("ipaneltab5") == 2: #Downloads
-                downloads.downloads_UI(self, context, layout, obj, properties.update_available, getFiles, GetListIndex, dlc_id, dlc_type, dlc_author)
+                downloads.downloads_UI(self, context, layout, obj)
 
 def menu_function_thing(self, context):
     pcoll = preview_collections["main"]

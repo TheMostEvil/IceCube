@@ -2,17 +2,17 @@ from urllib import request
 import bpy
 import json
 
-from ice_cube import root_folder, github_url,latest_dlc ,dlc_id,dlc_type,dlc_author
+from ice_cube import root_folder, github_url,latest_dlc ,dlc_id,dlc_type,dlc_author, bl_info
 
 from ice_cube_data.utils.general_func import IsVersionUpdated, getIndexCustom
 from ice_cube_data.utils.ui_tools import CustomErrorBox
 
 
 
-def check_for_updates_func(self, context, current_vers, update_avail):
+def check_for_updates_func(self, context):
 
         #gets the current version of the addon
-        current_version = current_vers
+        current_version = bl_info['version']
 
         #Attempts to get the latest version and description of the addon from github, if not, returns NONE
         try:
@@ -30,19 +30,19 @@ def check_for_updates_func(self, context, current_vers, update_avail):
 
         #Prints the correct message based on the version
         if version == True:
-            update_avail = False
+            has_update = False
             CustomErrorBox(f"You're running the latest version of Ice Cube. Version: {current_version}", title="Running Latest Version", icon='CHECKMARK')
         elif version == False:
-            update_avail = True
+            has_update = True
             CustomErrorBox(f"Changes:\n{github_changes}", title=f"There is an update available! Version: {github_latest_vers}", icon='IMPORT')
         elif version == "broken":
-            update_avail = False
+            has_update = False
             CustomErrorBox("Unable to connect to GitHub API, check your internet connection!",title="Connection Error", icon='CANCEL')
         else:
             CustomErrorBox("Unknown Error, contact \"DarthLilo#4103\" on Discord.", title="Unknown Error", icon='ERROR')
         
 
-        return{'FINISHED'}
+        return has_update
 
 
 

@@ -21,6 +21,7 @@ latest_dlc = "https://raw.githubusercontent.com/TheMostEvil/IceCube/master/ice_c
 dlc_id = []
 dlc_type = []
 dlc_author = []
+update_available = False
 
 #Folder Creation
 required_dirs = ["user_packs", "user_packs/rigs", "user_packs/inventory"]

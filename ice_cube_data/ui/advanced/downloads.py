@@ -5,9 +5,14 @@ import os
 from sys import platform
 import pathlib
 
-from ice_cube import root_folder
+from ice_cube import root_folder, dlc_id,dlc_type,dlc_author
 
-def downloads_UI(self, context, layout, obj, update, getFilesPath, getIndex, dlc_id, dlc_type, dlc_author):
+from ice_cube_data.utils.file_manage import getFiles
+from ice_cube_data.utils.general_func import GetListIndex
+
+import ice_cube
+
+def downloads_UI(self, context, layout, obj):
     box = layout.box()
     if platform == "darwin":
         b = box.row(align=True)
@@ -29,7 +34,7 @@ def downloads_UI(self, context, layout, obj, update, getFilesPath, getIndex, dlc
         b = box.row(align=True)
         b.label(text="Do NOT close Blender while installing")
         b = box.row(align=True)
-        if update == True:
+        if ice_cube.update_available == True:
             b.operator("install.update", text="Install Update", icon='MOD_WAVE')
         else:
             b.operator("check.updates", text="Check for Updates", icon='IMPORT')
@@ -65,7 +70,7 @@ def downloads_UI(self, context, layout, obj, update, getFilesPath, getIndex, dlc
             b1.label(text = "NO BACKUPS FOUND", icon = 'FILE_BACKUP')
             b1.label(text = f"Created:  [N/A]")
         else:
-            for backup in getFilesPath(backups_folder):
+            for backup in getFiles(backups_folder):
                 creation_date = pathlib.Path(f"{backups_folder}/{backup}").stat().st_mtime
                 creation_date = str(datetime.datetime.fromtimestamp(creation_date)).split(" ")[0]
                 b1 = box.row(align=True)
@@ -91,7 +96,7 @@ def downloads_UI(self, context, layout, obj, update, getFilesPath, getIndex, dlc
         b1 = box2.row(align=True)
         for dlc in dlc_id:
             try:
-                dlc_number = getIndex(str(dlc), dlc_id)
+                dlc_number = GetListIndex(str(dlc), dlc_id)
                 b1.label(text=f"{dlc_id[dlc_number]}",icon ='FILE_BACKUP')
                 b1.label(text=f"{dlc_type[dlc_number]}")
                 b1.label(text=f"{dlc_author[dlc_number]}")
@@ -116,10 +121,10 @@ def downloads_UI(self, context, layout, obj, update, getFilesPath, getIndex, dlc
             b1 = box2.row(align=True)
             b1.label(text = "NO DLC FOUND", icon = 'FILE_BACKUP')
         else:
-            for dlc in getFilesPath(dlc_folder_asset):
+            for dlc in getFiles(dlc_folder_asset):
                 b1 = box2.row(align=True)
                 b1.label(text = dlc, icon = 'FILE_BACKUP')
-            for dlc in getFilesPath(dlc_folder_preset):
+            for dlc in getFiles(dlc_folder_preset):
                 b1 = box2.row(align=True)
                 b1.label(text = dlc, icon = 'FILE_BACKUP')
 

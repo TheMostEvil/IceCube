@@ -22,7 +22,8 @@ from .web import check_for_updates_func, refresh_dlc_func
 
 #Custom Libraries
 from ice_cube_data.properties import properties
-from ice_cube import bl_info
+
+import ice_cube
 
 #file variables
 final_list = []
@@ -245,7 +246,7 @@ class check_for_updates(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        check_for_updates_func(self, context, bl_info['version'], properties.update_available)
+        ice_cube.update_available = check_for_updates_func(self, context)
         return{'FINISHED'}
 
 class install_update(bpy.types.Operator):

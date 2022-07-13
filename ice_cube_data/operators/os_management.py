@@ -7,6 +7,8 @@ from urllib import request
 import zipfile
 import shutil
 import distutils.dir_util
+import datetime
+import pathlib
 
 from ice_cube import root_folder, latest_dlc, github_url
 
@@ -39,6 +41,7 @@ def install_update_func(self, context):
     install_loc = root_folder+""
     downloads_folder = root_folder+"/downloads"
     backups_folders = root_folder+"/backups"
+    can_backup = False
     #checks if the downloads folder exists, if not, create one.
     if os.path.exists(downloads_folder):
         print("Path Found")
@@ -48,6 +51,25 @@ def install_update_func(self, context):
 
     download_folder = os.path.normpath(downloads_folder)
     backups_folders = os.path.normpath(backups_folders)
+
+    #checking if there's an up to date backup
+    backups_list = {}
+    for file in getFiles(backups_folders):
+        creation_date = pathlib.Path(f"{backups_folders}/{file}").stat().st_mtime
+        creation_date = "".join(str(datetime.datetime.fromtimestamp(creation_date)).split(" ")[0].split("-"))
+        backups_list[file] = creation_date
+    
+    cur_time = "".join(str(datetime.datetime.now()).split(" ")[0].split("-"))
+    
+    for entry in backups_list:
+        if backups_list[entry] == cur_time:
+            can_backup = True
+            break
+    
+    if can_backup == False:
+        CustomErrorBox("Please create an up-to-date backup before updating!","No updated backup found!","ERROR")
+        return{'FINISHED'}
+    
 
     #clear folder
     ClearDirectory(download_folder)

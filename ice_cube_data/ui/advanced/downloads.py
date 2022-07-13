@@ -5,7 +5,7 @@ import os
 from sys import platform
 import pathlib
 
-from ice_cube import root_folder, dlc_id,dlc_type,dlc_author
+from ice_cube import root_folder, dlc_id,dlc_type,dlc_author,dlc_date
 
 from ice_cube_data.utils.file_manage import getFiles
 from ice_cube_data.utils.general_func import GetListIndex
@@ -93,6 +93,7 @@ def downloads_UI(self, context, layout, obj):
         b1.label(text="ID:", icon ='FILE_BACKUP')
         b1.label(text="Type:")
         b1.label(text="Author:")
+        b1.label(text="Date:")
         b1 = box2.row(align=True)
         for dlc in dlc_id:
             try:
@@ -100,6 +101,7 @@ def downloads_UI(self, context, layout, obj):
                 b1.label(text=f"{dlc_id[dlc_number]}",icon ='FILE_BACKUP')
                 b1.label(text=f"{dlc_type[dlc_number]}")
                 b1.label(text=f"{dlc_author[dlc_number]}")
+                b1.label(text=f"{dlc_date[dlc_number]}")
             except:
                 b1.label(text="REFRESH")
             b1 = box2.row(align=True)

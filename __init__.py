@@ -21,6 +21,7 @@ latest_dlc = "https://raw.githubusercontent.com/TheMostEvil/IceCube/master/ice_c
 dlc_id = []
 dlc_type = []
 dlc_author = []
+dlc_date = []
 update_available = False
 
 #Folder Creation

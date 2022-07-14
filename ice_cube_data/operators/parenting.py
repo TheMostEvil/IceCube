@@ -6,7 +6,7 @@ from ice_cube_data.utils.selectors import isRigSelected
 from ice_cube_data.utils.general_func import GetListIndex
 from ice_cube_data.utils.ui_tools import CustomErrorBox
 
-def parent_left_arm(self, context, rig_half):
+def parent_left_arm(self, context):
     #lists
     named_meshes_list = []
     ignore_bend_meshes_list = []
@@ -16,9 +16,8 @@ def parent_left_arm(self, context, rig_half):
     key_term = ["_LeftArmChild"]
     dynamic_objs_L = ["Arm Twist LAT L", "Arm Deform LAT L", "Arm Bulge LAT L", "Arm Squish LAT L", "Lattice SMOOTH Arm L", "Sharp LAT Arm L"]
     #other variables
-    bl_str = ""
-    key_term_to_str = (bl_str.join(key_term))
-    no_bend_term_to_str = (bl_str.join(no_bend_term))
+    key_term_to_str = ("".join(key_term))
+    no_bend_term_to_str = ("".join(no_bend_term))
     rig = isRigSelected(context)
 
 
@@ -52,19 +51,6 @@ def parent_left_arm(self, context, rig_half):
         #twist
         modifier = left_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Twist LAT L", dynamic_obj_L_list)]]
-
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Arm Twist L"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
 
         #Arm Squish
         modifier = left_leg_parent.modifiers.new(name="Arm Squish", type='LATTICE')
@@ -136,19 +122,6 @@ def parent_left_arm(self, context, rig_half):
         modifier = left_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Twist LAT L", dynamic_obj_L_list)]]
 
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Arm Twist L"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
-
         #Arm Squish
         modifier = left_leg_parent.modifiers.new(name="Arm Squish", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Squish LAT L", dynamic_obj_L_list)]]
@@ -170,7 +143,7 @@ def parent_left_arm(self, context, rig_half):
         #Parenting Variable Setup
         objP = left_leg_parent
         rigP = rig
-        if rig_half == True:
+        if context.object.get("L_A_Half") == True:
             bone = rig.pose.bones["Arm Lower L"]
         else:
             bone = rig.pose.bones["Arm Upper L"]
@@ -211,17 +184,16 @@ def parent_left_arm(self, context, rig_half):
     
     return {'FINISHED'}
 
-def parent_right_arm(self, context, rig_half):
-        
+def parent_right_arm(self, context):
+
     named_meshes_list = []
     ignore_bend_meshes_list = []
     dynamic_obj_R_list = []
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_RightArmChild"]
     dynamic_objs_R = ["Arm Twist LAT R", "Arm Deform LAT R", "Arm Bulge LAT R", "Arm Squish LAT R", "Lattice SMOOTH Arm R", "Sharp LAT Arm R"]
-    bl_str = ""
-    key_term_to_str = (bl_str.join(key_term))
-    no_bend_term_to_str = (bl_str.join(key_term))
+    key_term_to_str = ("".join(key_term))
+    no_bend_term_to_str = ("".join(key_term))
     rig = isRigSelected(context)
 
     #checks if they have the proper name
@@ -255,19 +227,6 @@ def parent_right_arm(self, context, rig_half):
         #twist
         modifier = right_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Twist LAT R", dynamic_obj_R_list)]]
-
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Arm Twist R"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
 
         #Arm Squish
         modifier = right_leg_parent.modifiers.new(name="Arm Squish", type='LATTICE')
@@ -335,24 +294,13 @@ def parent_right_arm(self, context, rig_half):
 
         #Arm Bulge
         modifier = right_leg_parent.modifiers.new(name="Arm Bulge", type='LATTICE')
+        print(f"{right_leg_parent.name} MESH NAME")
+        print(dynamic_obj_R_list[GetListIndex("Arm Bulge LAT R", dynamic_obj_R_list)] + "LIST INDEX THING")
         modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Bulge LAT R", dynamic_obj_R_list)]]
 
         #twist
         modifier = right_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Twist LAT R", dynamic_obj_R_list)]]
-
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Arm Twist R"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
 
         #Arm Squish
         modifier = right_leg_parent.modifiers.new(name="Arm Squish", type='LATTICE')
@@ -375,7 +323,7 @@ def parent_right_arm(self, context, rig_half):
         #Parenting Variable Setup
         objP = right_leg_parent
         rigP = rig
-        if rig_half == True:
+        if context.object.get("R_A_Half") == True:
             bone = rig.pose.bones["Arm Lower R"]
         else:
             bone = rig.pose.bones["Arm Upper R"]
@@ -408,7 +356,7 @@ def parent_right_arm(self, context, rig_half):
     
     return {'FINISHED'}
 
-def parent_right_leg(self, context, rig_half):
+def parent_right_leg(self, context):
     rig = isRigSelected(context)
     named_meshes_list = []
     ignore_bend_meshes_list = []
@@ -416,9 +364,8 @@ def parent_right_leg(self, context, rig_half):
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_RightLegChild"]
     dynamic_objs_R_leg = ["Leg Twist LAT R", "Leg Deform LAT R", "Leg Bulge LAT R", "Leg Squish LAT R", "Lattice SMOOTH R", "Sharp LAT R"]
-    bl_str = ""
-    key_term_to_str = (bl_str.join(key_term))
-    no_bend_term_to_str = (bl_str.join(no_bend_term))
+    key_term_to_str = ("".join(key_term))
+    no_bend_term_to_str = ("".join(no_bend_term))
 
     #checks if they have the proper name
     for obj in bpy.data.objects:
@@ -449,19 +396,6 @@ def parent_right_leg(self, context, rig_half):
         #Twist
         modifier = right_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Twist LAT R", dynamic_obj_R_leg_list)]]
-
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Leg Twist R"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
 
         #Arm Squish
         modifier = right_leg_parent.modifiers.new(name="Leg Squish", type='LATTICE')
@@ -533,19 +467,6 @@ def parent_right_leg(self, context, rig_half):
         modifier = right_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Twist LAT R", dynamic_obj_R_leg_list)]]
 
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Leg Twist R"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
-
         #Arm Squish
         modifier = right_leg_parent.modifiers.new(name="Leg Squish", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Squish LAT R", dynamic_obj_R_leg_list)]]
@@ -567,7 +488,7 @@ def parent_right_leg(self, context, rig_half):
         #Parenting Variable Setup
         objP = right_leg_parent
         rigP = rig
-        if rig_half == True:
+        if context.object.get("R_L_Half") == True:
             bone = rig.pose.bones["Leg Lower R"]
         else:
             bone = rig.pose.bones["Leg Upper R"]
@@ -602,7 +523,7 @@ def parent_right_leg(self, context, rig_half):
     
     return {'FINISHED'}
 
-def parent_left_leg(self, context, rig_half):
+def parent_left_leg(self, context):
     rig = isRigSelected(context)
     named_meshes_list = []
     ignore_bend_meshes_list = []
@@ -610,9 +531,8 @@ def parent_left_leg(self, context, rig_half):
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_LeftLegChild"]
     dynamic_objs_L = ["Leg Twist LAT L", "Leg Deform LAT L", "Leg Bulge LAT L", "Leg Squish LAT L", "Lattice SMOOTH L", "Sharp LAT L"]
-    bl_str = ""
-    key_term_to_str = (bl_str.join(key_term))
-    no_bend_term_to_str = (bl_str.join(no_bend_term))
+    key_term_to_str = ("".join(key_term))
+    no_bend_term_to_str = ("".join(no_bend_term))
 
 
     #checks if they have the proper name
@@ -645,19 +565,6 @@ def parent_left_leg(self, context, rig_half):
         #Twist
         modifier = left_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Twist LAT L", dynamic_obj_L_list)]]
-
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Leg Twist L"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
 
         #Arm Squish
         modifier = left_leg_parent.modifiers.new(name="Leg Squish", type='LATTICE')
@@ -729,19 +636,6 @@ def parent_left_leg(self, context, rig_half):
         modifier = left_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Twist LAT L", dynamic_obj_L_list)]]
 
-        spot = modifier.driver_add("angle")
-        driver = spot.driver
-        driver.type = 'AVERAGE'
-        var = driver.variables.new()
-        var.type = 'TRANSFORMS'
-        var.name = "twist"
-        target = var.targets[0]
-        target.id = rig
-        target.bone_target = "Leg Twist L"
-        target.transform_type = 'ROT_Y'
-        target.rotation_mode = 'AUTO'
-        target.transform_space = 'LOCAL_SPACE'
-
         #Arm Squish
         modifier = left_leg_parent.modifiers.new(name="Leg Squish", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Squish LAT L", dynamic_obj_L_list)]]
@@ -763,7 +657,7 @@ def parent_left_leg(self, context, rig_half):
         #Parenting Variable Setup
         objP = left_leg_parent
         rigP = rig
-        if rig_half == True:
+        if context.object.get("L_L_Half") == True:
             bone = rig.pose.bones["Leg Lower L"]
         else:
             bone = rig.pose.bones["Leg Upper L"]
@@ -795,16 +689,15 @@ def parent_left_leg(self, context, rig_half):
     
     return {'FINISHED'}
 
-def parent_body_func(self, context, rig_half):
+def parent_body_func(self, context):
     named_meshes_list = []
     ignore_bend_meshes_list = []
     dynamic_obj_list = []
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_BodyChild"]
     dynamic_objs = ["Chest Lattice", "Shape_2_Chest", "BodyStretch", "BodyDeforms", "Breathing Lattice", "RoundedBodyTopDeform", "BodyBulge"]
-    bl_str = ""
-    key_term_to_str = (bl_str.join(key_term))
-    no_bend_term_to_str = (bl_str.join(no_bend_term))
+    key_term_to_str = ("".join(key_term))
+    no_bend_term_to_str = ("".join(no_bend_term))
     rig = isRigSelected(context)
 
     #checks if they have the proper name
@@ -983,7 +876,7 @@ def parent_body_func(self, context, rig_half):
         #Parenting Variable Setup
         objP = body_parent
         rigP = rig
-        if rig_half == True:
+        if context.object.get("Body_Bend_Half") == True:
             bone = rig.pose.bones["Body_Bendy_Start"]
         else:
             bone = rig.pose.bones["Body_Bendy_End"]

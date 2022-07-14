@@ -3,24 +3,47 @@ import bpy
 
 def parenting_UI(self, context, layout, rig_baked):
     box = layout.box()
+    obj = context.object
                 
     b = box.row(align=True)
     b.operator("parent.head", text="Parent Head")
     b = box.row(align=True)
-    b.operator("parent.rightarm", text="Parent Right Arm")
+    if obj.get("Body_Bend_Half") == True:
+        b.prop(obj, "Body_Bend_Half", text="",icon='SORT_ASC')
+    else:
+        b.prop(obj, "Body_Bend_Half", text="",icon='SORT_DESC')
     b.operator("parent.body", text="Parent Body")
-    b.operator("parent.leftarm", text="Parent Left Arm")
+    if obj.get("Body_Bend_Half") == True:
+        b.prop(obj, "Body_Bend_Half", text="",icon='SORT_ASC')
+    else:
+        b.prop(obj, "Body_Bend_Half", text="",icon='SORT_DESC')
     b = box.row(align=True)
+
+    if obj.get("R_A_Half") == True:
+        b.prop(obj, "R_A_Half", text="",icon='SORT_ASC')
+    else:
+        b.prop(obj, "R_A_Half", text="",icon='SORT_DESC')
+
+    b.operator("parent.rightarm", text="Parent Right Arm")
+    b.operator("parent.leftarm", text="Parent Left Arm")
+
+    if obj.get("L_A_Half") == True:
+        b.prop(obj, "L_A_Half", text="",icon='SORT_ASC')
+    else:
+        b.prop(obj, "L_A_Half", text="",icon='SORT_DESC')
+
+    b = box.row(align=True)
+    if obj.get("R_L_Half") == True:
+        b.prop(obj, "R_L_Half", text="",icon='SORT_ASC')
+    else:
+        b.prop(obj, "R_L_Half", text="",icon='SORT_DESC')
     b.operator("parent.rightleg", text="Parent Right Leg")
     b.operator("parent.leftleg", text="Parent Left Leg")
-    b = box.row(align=True)
-    if rig_baked == True:
-        global_parent_text = "Parent half: Lower"
-        icon = 'LAYER_ACTIVE'
+
+    if obj.get("L_L_Half") == True:
+        b.prop(obj, "L_L_Half", text="",icon='SORT_ASC')
     else:
-        global_parent_text = "Parent half: Upper"
-        icon = 'LAYER_USED'
-    b.operator("rig.parentstruct", text=global_parent_text, icon=icon)
+        b.prop(obj, "L_L_Half", text="",icon='SORT_DESC')
 
     
     box = layout.box()

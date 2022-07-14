@@ -63,21 +63,6 @@ class rig_baked_class(bpy.types.Operator): #A boolean that controls whether to u
 
         return {'FINISHED'}
 
-class parent_struct_class(bpy.types.Operator): #Which half of the rig should the selected body part be applied to
-    """Only applies when using the \"_IgnoreBend\" tag"""
-    bl_idname = "rig.parentstruct"
-    bl_label = "Which half of the part do you want to parent the asset to?"
-    bl_options = {'REGISTER', 'UNDO'}
-
-    def execute(self, context):
-
-        obj = context.object
-
-        properties.global_parent_half = not properties.global_parent_half
-        
-
-        return {'FINISHED'}
-
 class append_preset(bpy.types.Operator):
     """Imports a preset or rig from your library"""
     bl_idname = "append.preset"
@@ -106,7 +91,7 @@ class parent_leftarm(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        parent_left_arm(self, context, properties.global_parent_half)
+        parent_left_arm(self, context)
         return{'FINISHED'}
 
 class parent_rightarm(bpy.types.Operator):
@@ -116,7 +101,7 @@ class parent_rightarm(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        parent_right_arm(self, context, properties.global_parent_half)
+        parent_right_arm(self, context)
         return{'FINISHED'}
 
 class parent_rightleg(bpy.types.Operator):
@@ -126,7 +111,7 @@ class parent_rightleg(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        parent_right_leg(self, context, properties.global_parent_half)
+        parent_right_leg(self, context)
         return{'FINISHED'}
     
 class parent_leftleg(bpy.types.Operator):
@@ -136,7 +121,7 @@ class parent_leftleg(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        parent_left_leg(self, context, properties.global_parent_half)
+        parent_left_leg(self, context)
         return{'FINISHED'}
         
 class parent_body(bpy.types.Operator):
@@ -146,7 +131,7 @@ class parent_body(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
     
     def execute(self, context):
-        parent_body_func(self, context, properties.global_parent_half)
+        parent_body_func(self, context)
         return{'FINISHED'}
 
 class parent_head(bpy.types.Operator):
@@ -378,7 +363,6 @@ except:
 
 classes = [
     rig_baked_class,
-    parent_struct_class,
     append_preset,
     append_defaultrig,
     parent_leftarm,

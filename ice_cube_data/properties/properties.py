@@ -144,6 +144,20 @@ name="global_head_rotation", description="Enables/Disables global head rotation"
 bpy.types.Object.prop_clipboard = BoolProperty(
 name="prop_clipboard", description="Determines if the settings will be exported to the clipboard or a file", default=False)
 
+bpy.types.Object.R_A_Half = BoolProperty(
+    name = "R_A_Half", description="Determines which half of the Right Arm the mesh should be parented to",default=False)
+
+bpy.types.Object.L_A_Half = BoolProperty(
+    name = "L_A_Half", description="Determines which half of the Left Arm the mesh should be parented to",default=False)
+
+bpy.types.Object.R_L_Half = BoolProperty(
+    name = "R_L_Half", description="Determines which half of the Right Leg the mesh should be parented to",default=False)
+
+bpy.types.Object.L_L_Half = BoolProperty(
+    name = "L_L_Half", description="Determines which half of the Left Leg the mesh should be parented to",default=False)
+
+bpy.types.Object.Body_Bend_Half = BoolProperty(
+    name = "Body_Bend_Half", description="Determines which half of the Body the mesh should be parented to",default=False)
 
 global_rig_baked = False
 global_parent_half = False

@@ -8,15 +8,14 @@ def advanced_misc_UI(self, context, layout, obj):
     box_sub_1 = box.box()
     box_sub_1.label(text="Settings Data", icon='SETTINGS')
     bs1 = box_sub_1.row(align=True)
+    bs1.prop(obj,"prop_clipboard",text="Use Clipboard?")
     bs1.prop(obj,"ipaneltab7",text="")
-    bs1 = box_sub_1.row(align=True)
     if obj.get("ipaneltab7") == 0:
-        bs1.prop(obj,"prop_clipboard",text="Use Clipboard?")
         if obj.get("prop_clipboard") == False:
             bs1 = box_sub_1.row(align=True)
             bs1.prop(obj,"export_settings_filepath",text="Export Loc",icon='EXPORT')
-        bs1 = box_sub_1.row(align=True)
-        bs1.prop(obj,"export_settings_name",text="Filename",icon='INFO')
+            bs1 = box_sub_1.row(align=True)
+            bs1.prop(obj,"export_settings_name",text="Filename",icon='INFO')
         bs1 = box_sub_1.row(align=True)
         if obj.get("prop_clipboard") == True:
             bs1.operator("export.settings", text="Export to Clipboard")
@@ -24,7 +23,6 @@ def advanced_misc_UI(self, context, layout, obj):
             bs1.operator("export.settings", text="Export to File")
     
     elif obj.get("ipaneltab7") == 1:
-        bs1.prop(obj,"prop_clipboard",text="From Clipboard?")
         if obj.get("prop_clipboard") == False:
             bs1 = box_sub_1.row(align=True)
             bs1.prop(obj,"import_settings_filepath",text="Import File",icon='EXPORT')

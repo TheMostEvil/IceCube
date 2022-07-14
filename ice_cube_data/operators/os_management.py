@@ -335,8 +335,13 @@ def export_settings_data(self, context):
     filepath = obj.export_settings_filepath
     filename = obj.export_settings_name
 
+    if obj.get("prop_clipboard") == True:
+        json_name = filename
+    else:
+        json_name = "default"
+
     json_data = {
-        "name" : obj.export_settings_name,
+        "name" : json_name,
         "prop_data" : {}
     }
 
@@ -348,9 +353,6 @@ def export_settings_data(self, context):
     converted_json_data = json.dumps(json_data,indent=4)
 
     if obj.get("prop_clipboard") == True:
-        if filename == "":
-            CustomErrorBox("Please enter a valid filename!","Invalid File Name",'ERROR')
-            return{'FINISHED'}
         wm.clipboard = f"{converted_json_data}"
     elif obj.get("prop_clipboard") == False:
         if filepath == "":

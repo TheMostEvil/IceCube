@@ -24,7 +24,7 @@ from ice_cube_data.ui import credits_info
 from ice_cube_data.ui.main import bone_layers, general_settings
 from ice_cube_data.ui.customization import custom_general, mesh, misc
 from ice_cube_data.ui.materials import skin_material, eye_material, misc_material
-from ice_cube_data.ui.advanced import dlc_ui, parenting, downloads
+from ice_cube_data.ui.advanced import dlc_ui, parenting, downloads, adv_misc
 
 
 
@@ -237,6 +237,8 @@ class IC_Panel(bpy.types.Panel):
                 parenting.parenting_UI(self, context, layout, properties.global_rig_baked)
             if obj.get("ipaneltab5") == 2: #Downloads
                 downloads.downloads_UI(self, context, layout, obj)
+            if obj.get("ipaneltab5") == 3: #Misc
+                adv_misc.advanced_misc_UI(self, context, layout, obj)
 
 def menu_function_thing(self, context):
     pcoll = preview_collections["main"]

@@ -137,6 +137,13 @@ name="line_mouth", description="Show/Hides the cartoon line mouth", default=Fals
 bpy.types.Object.baked_rig = BoolProperty(
 name="baked_rig", description="Decides if the imported rig should be baked or not", default=False)
 
+bpy.types.Object.global_head_rotation = BoolProperty(
+name="global_head_rotation", description="Enables/Disables global head rotation", default=False)
+
+bpy.types.Object.prop_clipboard = BoolProperty(
+name="prop_clipboard", description="Determines if the settings will be exported to the clipboard or a file", default=False)
+
+
 global_rig_baked = False
 global_parent_half = False
 update_available = False
@@ -237,6 +244,10 @@ bpy.types.Object.breastweight = FloatProperty(
 
 bpy.types.Object.bodytopround = FloatProperty(
     name="bodytopround", description="Rounded Body Top", default=0, min=0, max=2)
+
+bpy.types.Object.breath = FloatProperty(
+    name="breath", description="Deforms the body to look like its breathing", default=0, min=0, max=2)
+
 #Enum Prop 
 
 bpy.types.Object.armtype_enum = EnumProperty(
@@ -284,7 +295,8 @@ bpy.types.Object.ipaneltab5 = EnumProperty(
     default = 'one',
     items = [('one', 'DLC', 'The DLC management menu'),
              ('two', 'Parenting', 'The advanced parenting panel'),
-             ('three', 'Downloads', 'A panel dedicated to managing downloads')
+             ('three', 'Downloads', 'A panel dedicated to managing downloads'),
+             ('four', 'Misc', 'The misc functions panel')
              ])
 
 bpy.types.Object.ipaneltab6 = EnumProperty(
@@ -292,6 +304,13 @@ bpy.types.Object.ipaneltab6 = EnumProperty(
     default = 'one',
     items = [('one', 'Assets', 'Asset appending menu'),
              ('two', 'Presets', 'Preset appending menu')
+             ])
+
+bpy.types.Object.ipaneltab7 = EnumProperty(
+    name = "haha tab",
+    default = 'one',
+    items = [('one', 'Exporting', 'Export Settings'),
+             ('two', 'Importing', 'Import Settings')
              ])
 
 bpy.types.Object.bendstyle = EnumProperty(
@@ -325,6 +344,23 @@ bpy.types.Scene.minecraft_username = StringProperty(name="username", description
 bpy.types.Object.backup_name = StringProperty(name="backup_name", description="Backup Name", default="")
 
 bpy.types.Object.dlc_name_load = StringProperty(name="dlc_name_load", description="DLC Name Load", default="")
+
+bpy.types.Object.export_settings_filepath = StringProperty(
+    name="export_settings_filepath",
+    description="Defines a location to export settings to",
+    subtype='DIR_PATH',
+    default="")
+
+bpy.types.Object.import_settings_filepath = StringProperty(
+    name="export_settings_filepath",
+    description="Defines a location to export settings to",
+    subtype='FILE_PATH',
+    default="")
+
+bpy.types.Object.export_settings_name = StringProperty(
+    name="export_settings_name",
+    description="Defines a name for the export settings",
+    default="")
 
 classes = [
            ]

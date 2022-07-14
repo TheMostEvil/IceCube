@@ -105,6 +105,8 @@ def custom_mesh_UI(self, context, layout, obj):
             else:
                 b.prop(obj, "lowerbodywidth", icon = "DOWNARROW_HLT", text = "Thinner")
         b.prop(obj, "bodytopround", icon = "RIGHTARROW", text = "Rounded Body Top")
+        b = box1.row(align=True)
+        b.prop(obj, "breath", text = "Breath Slider",slider=True)
     b = box1.row(align=True)
     if obj.get("eyebrowdeform") == 0:
         b.prop(obj, "eyebrowdeform", icon = "RIGHTARROW", text = "Eyebrow Deforms")

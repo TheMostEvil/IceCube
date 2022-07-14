@@ -4,6 +4,7 @@ import os
 import json
 
 from ice_cube import root_folder
+from ice_cube_data.properties import properties
 
 def dlc_assets_UI(self, context, layout, inv_system):
     #window setup
@@ -185,6 +186,8 @@ def dlc_presets_UI(self, context, layout, files_list, rig_baked):
         b1.enabled = True
     else:
         b1.enabled = False
+        if properties.global_rig_baked == True:
+            properties.global_rig_baked = False
     b = box.row(align=True)
     b.operator("custom_presets.open", text = "DLC Folder")
     b.operator("template2.download", text = "Rig Template")

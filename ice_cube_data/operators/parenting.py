@@ -14,7 +14,7 @@ def parent_left_arm(self, context, rig_half):
     #terms
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_LeftArmChild"]
-    dynamic_objs_L = ["Arm Twist Empty L", "Arm Deform LAT L", "Arm Bulge LAT L", "Arm Squish LAT L", "Lattice SMOOTH Arm L", "Sharp LAT Arm L"]
+    dynamic_objs_L = ["Arm Twist LAT L", "Arm Deform LAT L", "Arm Bulge LAT L", "Arm Squish LAT L", "Lattice SMOOTH Arm L", "Sharp LAT Arm L"]
     #other variables
     bl_str = ""
     key_term_to_str = (bl_str.join(key_term))
@@ -50,10 +50,8 @@ def parent_left_arm(self, context, rig_half):
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Bulge LAT L", dynamic_obj_L_list)]]
 
         #twist
-        modifier = left_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Twist Empty L", dynamic_obj_L_list)]]
+        modifier = left_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Twist LAT L", dynamic_obj_L_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -135,10 +133,8 @@ def parent_left_arm(self, context, rig_half):
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Bulge LAT L", dynamic_obj_L_list)]]
 
         #twist
-        modifier = left_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Twist Empty L", dynamic_obj_L_list)]]
+        modifier = left_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Arm Twist LAT L", dynamic_obj_L_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -222,7 +218,7 @@ def parent_right_arm(self, context, rig_half):
     dynamic_obj_R_list = []
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_RightArmChild"]
-    dynamic_objs_R = ["Arm Twist Empty R", "Arm Deform LAT R", "Arm Bulge LAT R", "Arm Squish LAT R", "Lattice SMOOTH Arm R", "Sharp LAT Arm R"]
+    dynamic_objs_R = ["Arm Twist LAT R", "Arm Deform LAT R", "Arm Bulge LAT R", "Arm Squish LAT R", "Lattice SMOOTH Arm R", "Sharp LAT Arm R"]
     bl_str = ""
     key_term_to_str = (bl_str.join(key_term))
     no_bend_term_to_str = (bl_str.join(key_term))
@@ -257,10 +253,8 @@ def parent_right_arm(self, context, rig_half):
         modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Bulge LAT R", dynamic_obj_R_list)]]
 
         #twist
-        modifier = right_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Twist Empty R", dynamic_obj_R_list)]]
+        modifier = right_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Twist LAT R", dynamic_obj_R_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -344,10 +338,8 @@ def parent_right_arm(self, context, rig_half):
         modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Bulge LAT R", dynamic_obj_R_list)]]
 
         #twist
-        modifier = right_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Twist Empty R", dynamic_obj_R_list)]]
+        modifier = right_leg_parent.modifiers.new(name="Arm Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_R_list[GetListIndex("Arm Twist LAT R", dynamic_obj_R_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -423,7 +415,7 @@ def parent_right_leg(self, context, rig_half):
     dynamic_obj_R_leg_list = []
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_RightLegChild"]
-    dynamic_objs_R_leg = ["Leg Twist Empty R", "Leg Deform LAT R", "Leg Bulge LAT R", "Leg Squish LAT R", "Lattice SMOOTH R", "Sharp LAT R"]
+    dynamic_objs_R_leg = ["Leg Twist LAT R", "Leg Deform LAT R", "Leg Bulge LAT R", "Leg Squish LAT R", "Lattice SMOOTH R", "Sharp LAT R"]
     bl_str = ""
     key_term_to_str = (bl_str.join(key_term))
     no_bend_term_to_str = (bl_str.join(no_bend_term))
@@ -454,11 +446,9 @@ def parent_right_leg(self, context, rig_half):
         modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Bulge LAT R", dynamic_obj_R_leg_list)]]
 
 
-        #Simple Deform
-        modifier = right_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Twist Empty R", dynamic_obj_R_leg_list)]]
+        #Twist
+        modifier = right_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Twist LAT R", dynamic_obj_R_leg_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -539,11 +529,9 @@ def parent_right_leg(self, context, rig_half):
         modifier = right_leg_parent.modifiers.new(name="Leg Bulge", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Bulge LAT R", dynamic_obj_R_leg_list)]]
 
-        #Simple Deform
-        modifier = right_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Twist Empty R", dynamic_obj_R_leg_list)]]
+        #Twist
+        modifier = right_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_R_leg_list[GetListIndex("Leg Twist LAT R", dynamic_obj_R_leg_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -621,7 +609,7 @@ def parent_left_leg(self, context, rig_half):
     dynamic_obj_L_list = []
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_LeftLegChild"]
-    dynamic_objs_L = ["Leg Twist Empty L", "Leg Deform LAT L", "Leg Bulge LAT L", "Leg Squish LAT L", "Lattice SMOOTH L", "Sharp LAT L"]
+    dynamic_objs_L = ["Leg Twist LAT L", "Leg Deform LAT L", "Leg Bulge LAT L", "Leg Squish LAT L", "Lattice SMOOTH L", "Sharp LAT L"]
     bl_str = ""
     key_term_to_str = (bl_str.join(key_term))
     no_bend_term_to_str = (bl_str.join(no_bend_term))
@@ -654,11 +642,9 @@ def parent_left_leg(self, context, rig_half):
         modifier = left_leg_parent.modifiers.new(name="Leg Bulge", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Bulge LAT L", dynamic_obj_L_list)]]
 
-        #Simple Deform
-        modifier = left_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Twist Empty L", dynamic_obj_L_list)]]
+        #Twist
+        modifier = left_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Twist LAT L", dynamic_obj_L_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -739,11 +725,9 @@ def parent_left_leg(self, context, rig_half):
         modifier = left_leg_parent.modifiers.new(name="Leg Bulge", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Bulge LAT L", dynamic_obj_L_list)]]
 
-        #Simple Deform
-        modifier = left_leg_parent.modifiers.new(name="Twist", type='SIMPLE_DEFORM')
-        modifier.deform_method = 'TWIST'
-        modifier.deform_axis = 'Z'
-        modifier.origin = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Twist Empty L", dynamic_obj_L_list)]]
+        #Twist
+        modifier = left_leg_parent.modifiers.new(name="Leg Twist", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_L_list[GetListIndex("Leg Twist LAT L", dynamic_obj_L_list)]]
 
         spot = modifier.driver_add("angle")
         driver = spot.driver
@@ -817,7 +801,7 @@ def parent_body_func(self, context, rig_half):
     dynamic_obj_list = []
     no_bend_term = ["_IgnoreBend"]
     key_term = ["_BodyChild"]
-    dynamic_objs = ["Chest Lattice", "Shape_2_Chest", "BodyStretch", "BodyDeforms", "RoundedBodyTopDeform", "BodyBulge"]
+    dynamic_objs = ["Chest Lattice", "Shape_2_Chest", "BodyStretch", "BodyDeforms", "Breathing Lattice", "RoundedBodyTopDeform", "BodyBulge"]
     bl_str = ""
     key_term_to_str = (bl_str.join(key_term))
     no_bend_term_to_str = (bl_str.join(no_bend_term))
@@ -883,6 +867,10 @@ def parent_body_func(self, context, rig_half):
         #Body Deform
         modifier = body_parent.modifiers.new(name="Body Deform", type='LATTICE')
         modifier.object = bpy.data.objects[dynamic_obj_list[GetListIndex("BodyDeforms", dynamic_obj_list)]]
+
+        #Breath
+        modifier = body_parent.modifiers.new(name="Breath Lattice", type='LATTICE')
+        modifier.object = bpy.data.objects[dynamic_obj_list[GetListIndex("Breathing Lattice", dynamic_obj_list)]]
 
 
         #Body Stretch

@@ -1,6 +1,7 @@
 import bpy
 import os
 import shutil
+import json
 
 def getFiles(path): #returns a list of files in a specified dir
     dir = os.path.realpath(path);
@@ -36,6 +37,13 @@ def GetRootFolder(path, folder_up): #Get a str to the root folder
         path.remove(path[len(path)-1])
 
     return path
+
+def open_json(path):
+    with open(path, 'r') as json_opener:
+        json_data = json_opener.read()
+    json_data = json.loads(json_data)
+
+    return json_data
 
 
 classes = [

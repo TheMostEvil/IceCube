@@ -13,9 +13,13 @@ import pathlib
 from ice_cube import root_folder, latest_dlc, github_url
 
 from ice_cube_data.utils.ui_tools import CustomErrorBox
-from ice_cube_data.utils.file_manage import ClearDirectory, getFiles
+from ice_cube_data.utils.file_manage import ClearDirectory, getFiles, open_json
 from ice_cube_data.utils.general_func import GetListIndex, getIndexCustom
 
+properties_to_export = ["r_arm_ik","l_arm_ik","r_leg_ik","l_leg_ik","ankle_r","ankle_l","stretch_leg_r","stretch_leg_l","stretch_arm_r","stretch_arm_l","fingers_r","fingers_l","wrist_lock_r","wrist_lock_l","eyelashes","wireframe","jaw","round_jaw","bevelmouth","teeth_cartoon","antilag","teeth_bool","tongue","facerig",
+    "leg_deform","body_deforms","dynamichair","eyebrowdeform","togglepupil","togglegradient","togglesparkle1","togglesparkle2","toggleemission","toggle_1","toggle_2","squaremouth","mouthrotate","toggle_3","toggle_4","breastswitch","line_mouth","baked_rig","global_head_rotation","squish_arm_r","squish_arm_l","squish_leg_r",
+    "squish_leg_l","squish_body","squish_head","breastshape","jaw_strength","bevelmouthstrength","leg_taper_strength","hip","upperbodywidth","lowerbodywidth","bulge_arm_r","bulge_arm_l","bulge_leg_r","bulge_leg_l","eyebrowheight","eyebrowtaper1","eyebrowtaper2","leg_taper_strength2","armtaper","bodybulge","eyedepth","mouthdepth",
+    "innermouthdepth","breastsize","breastweight","bodytopround","breath","armtype_enum","bendstyle","arm_ik_parent_r","arm_ik_parent_l"]
 
 def open_user_packs(self, context):
     #addon location
@@ -321,6 +325,97 @@ def download_dlc_func(self, context, dlc_id):
             CustomErrorBox("Please enter the name of a DLC","Selection Error",'ERROR')
 
         return{'FINISHED'}
+
+def export_settings_data(self, context):
+
+    obj = context.object
+    wm = bpy.context.window_manager
+
+    
+    filepath = obj.export_settings_filepath
+    filename = obj.export_settings_name
+
+    json_data = {
+        "name" : obj.export_settings_name,
+        "prop_data" : {}
+    }
+
+    for prop in properties_to_export:
+        try:
+            json_data["prop_data"][prop] = getattr(obj, prop)
+        except:
+            pass
+    converted_json_data = json.dumps(json_data,indent=4)
+
+    if obj.get("prop_clipboard") == True:
+        if filename == "":
+            CustomErrorBox("Please enter a valid filename!","Invalid File Name",'ERROR')
+            return{'FINISHED'}
+        wm.clipboard = f"{converted_json_data}"
+    elif obj.get("prop_clipboard") == False:
+        if filepath == "":
+            CustomErrorBox("Please select a valid filepath!","Invalid File Path",'ERROR')
+            return{'FINISHED'}
+        if filename == "":
+            CustomErrorBox("Please enter a valid filename!","Invalid File Name",'ERROR')
+            return{'FINISHED'}
+        with open(f"{filepath}/{filename}.ice_cube_data", "w") as json_file:
+            json_file.write(converted_json_data)
+
+    return{'FINISHED'}
+
+def import_settings_data(self, context):
+    obj = context.object
+    wm = bpy.context.window_manager
+    filepath = obj.import_settings_filepath
+
+    if obj.get("prop_clipboard") == True:
+        settings_json_data = ""
+        settings_name = ""
+        prop_data = ""
+        try:
+            settings_json_data = json.loads(wm.clipboard)
+        except:
+            CustomErrorBox("Please export the settings data before attempting an import!","Invalid Clipboard Data!",'ERROR')
+            return{'FINISHED'}
+        try:
+            settings_name = settings_json_data['name']
+            prop_data = settings_json_data['prop_data']
+        except:
+            CustomErrorBox("Please export the settings data before attempting an import!","Invalid Clipboard Data!",'ERROR')
+            return{'FINISHED'}
+        
+        for prop in prop_data:
+            try:
+                setattr(obj, prop, prop_data[prop])
+            except:
+                pass
+        CustomErrorBox("Successfully loaded settings data from clipboard!\nInteract with the scene to update!","Imported Settings",'INFO')
+    
+    elif obj.get("prop_clipboard") == False:
+        settings_json_data = ""
+        settings_name = ""
+        prop_data = ""
+
+        try:
+            settings_json_data = open_json(filepath)
+        except:
+            CustomErrorBox("Please select a valid settings file!","Invalid File!",'ERROR')
+            return{'FINISHED'}
+        
+        prop_data = settings_json_data['prop_data']
+
+        for prop in prop_data:
+            try:
+                setattr(obj, prop, prop_data[prop])
+                print(f"{prop} == {prop_data[prop]}")
+            except:
+                pass
+        CustomErrorBox(f"Successfully loaded settings data from file [{settings_json_data['name']}.ice_cube_data]!\nInteract with the scene to update!","Imported Settings",'INFO')
+        
+
+    return{'FINISHED'}
+
 
 classes = [
            ]

@@ -19,6 +19,8 @@ def general_settings_main_UI(self, context, layout, obj, icon):
     b.prop(obj, "squaremouth", text = "Mine-Imator Mouth")
     b.prop(obj, "mouthrotate", text = "Mouth Rotate")
     b = box1.row(align=True)
+    b.prop(obj, "global_head_rotation", text = "Global Head Rot")
+    b = box1.row(align=True)
     preset = box1.box()
     b = preset.row(align=True)
     b.prop(obj, "toggle_1", text = "Toggle 1")

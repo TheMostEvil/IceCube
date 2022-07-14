@@ -1,7 +1,7 @@
 bl_info ={
     "name": "Ice Cube",
     "author": "DarhtLilo",
-    "version": (1, 3, 1),
+    "version": (1, 3, 2),
     "blender": (3, 0, 0),
     "location": "View3D > Tool",
     "description": "A custom python script for Ice Cube! Credit to \"@KJMineImator\" and \"@RealMineAPI\" on twitter for helping me with the code!",
@@ -25,7 +25,7 @@ dlc_date = []
 update_available = False
 
 #Folder Creation
-required_dirs = ["user_packs", "user_packs/rigs", "user_packs/inventory"]
+required_dirs = ["skins","user_packs", "user_packs/rigs", "user_packs/inventory"]
 for dir in required_dirs:
     dir_path = os.path.normpath(f"{root_folder}/ice_cube_data/internal_files/{dir}")
     if os.path.exists(dir_path):

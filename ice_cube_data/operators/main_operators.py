@@ -16,7 +16,7 @@ from ice_cube_data.utils.web_tools import CustomLink
 #Operator Functions
 from .append import append_preset_func, append_default_rig, append_emotion_line_func
 from .parenting import parent_left_arm, parent_right_arm, parent_right_leg, parent_left_leg, parent_body_func, parent_head_func
-from .os_management import open_user_packs, install_update_func, create_backup_func, load_backup_func, delete_backup_func, download_dlc_func
+from .os_management import open_user_packs, install_update_func, create_backup_func, load_backup_func, delete_backup_func, download_dlc_func, export_settings_data, import_settings_data
 from .web import check_for_updates_func, refresh_dlc_func
 
 
@@ -326,6 +326,28 @@ class download_dlc(bpy.types.Operator):
         download_dlc_func(self, context, dlc_id)
         return{'FINISHED'}
 
+
+class export_settings_data_class(bpy.types.Operator):
+    """Exports the current rig settings"""
+    bl_idname = "export.settings"
+    bl_label = "Export Settings"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self,context):
+        export_settings_data(self, context)
+        return{'FINISHED'}
+
+class import_settings_data_class(bpy.types.Operator):
+    """Imports rig settings from the clipboard or a file"""
+    bl_idname = "import.settings"
+    bl_label = "Export Settings"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self,context):
+        import_settings_data(self, context)
+        return{'FINISHED'}
+
+
 try:
     bpy.types.Scene.selected_asset = EnumProperty(
         name = "Selected Pack",
@@ -366,6 +388,8 @@ classes = [
     delete_backup,
     refresh_dlc,
     download_dlc,
+    export_settings_data_class,
+    import_settings_data_class,
            ]
 
 def register():

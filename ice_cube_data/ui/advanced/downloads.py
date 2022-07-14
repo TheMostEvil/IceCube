@@ -4,15 +4,42 @@ import bpy
 import os
 from sys import platform
 import pathlib
+from bpy.props import EnumProperty
 
-from ice_cube import root_folder, dlc_id,dlc_type,dlc_author,dlc_date
+
+from ice_cube import root_folder, dlc_id,dlc_type,dlc_author,dlc_date,dlc_enum_data
 
 from ice_cube_data.utils.file_manage import getFiles
 from ice_cube_data.utils.general_func import GetListIndex
 
 import ice_cube
 
+print(ice_cube.dlc_enum_data)
+
+
+#creating backups list
+backup_items = []
+backups_folder = root_folder+"/backups"
+backup_folder_scan = os.listdir(backups_folder)
+
+if len(backup_folder_scan) >= 1:
+    for backup in getFiles(backups_folder):
+        backup_layout = (backup, backup, 'backup')
+        if backup_items.__contains__(backup_layout) is False:
+            backup_items.append(backup_layout)
+
+bpy.types.Object.backups_list = EnumProperty(
+    name = "Backup List",
+    items = backup_items
+)
+bpy.types.Object.dlc_list = EnumProperty(
+    name = "DLC List",
+    items = dlc_enum_data
+)
+
 def downloads_UI(self, context, layout, obj):
+    backups_folder = root_folder+"/backups"
+    backup_folder_scan = os.listdir(backups_folder)
     box = layout.box()
     if platform == "darwin":
         b = box.row(align=True)
@@ -20,7 +47,6 @@ def downloads_UI(self, context, layout, obj):
     else:
         virtual_ice_cube = root_folder+""
         virtual_ice_cube = os.path.normpath(virtual_ice_cube)
-        backups_folder = root_folder+"/backups"
         dlc_folder_preset = root_folder+"/ice_cube_data/internal_files/user_packs/rigs"
         dlc_folder_asset = root_folder+"/ice_cube_data/internal_files/user_packs/inventory"
         if os.path.exists(backups_folder):
@@ -44,72 +70,62 @@ def downloads_UI(self, context, layout, obj):
         b = box.row(align=True)
         b.prop(obj, "backup_name", text="Backup Name", icon='FILE_BACKUP')
         b = box.row(align=True)
-        bcreate = b.row(align=True)
-        bload = b.row(align=True)
-        bdelete = b.row(align=True)
-        bcreate.operator("create.backup", text="Create Backup")
-        bload.operator("load.backup", text="Load Backup")
-        bdelete.operator("delete.backup", text="Delete Backup")
-        if obj.get("backup_name"):
-            if obj.get("backup_name") == "":
-                bload.enabled = False
-                bdelete.enabled = False
-            else:
-                pass
-        else:
-            bload.enabled = False
-            bdelete.enabled = False
+        if len(backup_folder_scan) >= 1:
+            b.prop(obj, "backups_list",text="")
+            b.operator("update.backups", text="",icon='FILE_REFRESH')
         b = box.row(align=True)
-
-        box = b.box()
-        b1 = box.row(align=True)
-        b1.label(text = "Created Backups:")
-        backup_folder_scan = os.listdir(backups_folder)
-        if len(backup_folder_scan) == 0:
+        bcreate = b.row(align=True)
+        if len(backup_folder_scan) >= 1:
+            bload = b.row(align=True)
+            bdelete = b.row(align=True)
+        bcreate.operator("create.backup", text="Create Backup")
+        if len(backup_folder_scan) >= 1:
+            bload.operator("load.backup", text="Load Backup")
+            bdelete.operator("delete.backup", text="Delete Backup")
+        b = box.row(align=True)
+        if len(backup_folder_scan) >= 1:
+            box = b.box()
             b1 = box.row(align=True)
-            b1.label(text = "NO BACKUPS FOUND", icon = 'FILE_BACKUP')
-            b1.label(text = f"Created:  [N/A]")
-        else:
-            for backup in getFiles(backups_folder):
-                creation_date = pathlib.Path(f"{backups_folder}/{backup}").stat().st_mtime
-                creation_date = str(datetime.datetime.fromtimestamp(creation_date)).split(" ")[0]
-                b1 = box.row(align=True)
-                b1.label(text = backup, icon = 'FILE_BACKUP')
-                b1.label(text = f"Created:  [{creation_date}]")
+            b1.label(text = "Selected Backup:")
+            selected_backup = getattr(obj,"backups_list")
+            creation_date = pathlib.Path(f"{backups_folder}/{selected_backup}").stat().st_mtime
+            creation_date = str(datetime.datetime.fromtimestamp(creation_date)).split(" ")[0]
+            b1 = box.row(align=True)
+            b1.label(text = selected_backup, icon = 'FILE_BACKUP')
+            b1.label(text = f"Created:  [{creation_date}]")
         box = layout.box()
         b = box.row(align=True)
         b.label(text = "DLC Manager",icon='IMPORT')
         b = box.row(align=True)
-        b.prop(obj, "dlc_name_load", text="DLC Name", icon='FILE_FOLDER')
+
+        b.prop(obj,"dlc_list",text="")
         b.operator("download.dlc", text="", icon= 'IMPORT')
         b.operator("refresh.dlc", text="", icon= 'FILE_REFRESH')
         b = box.row(align=True)
-        b.label(text = "Available DLC:")
-        b = box.row(align=True)
+        
         #start of box
         box2 = b.box()
         b1 = box2.row(align=True)
 
-        b1.label(text="ID:", icon ='FILE_BACKUP')
-        b1.label(text="Type:")
+        b1.label(text="Type:", icon ='FILE_BACKUP')
         b1.label(text="Author:")
         b1.label(text="Date:")
         b1 = box2.row(align=True)
-        for dlc in dlc_id:
-            try:
-                dlc_number = GetListIndex(str(dlc), dlc_id)
-                b1.label(text=f"{dlc_id[dlc_number]}",icon ='FILE_BACKUP')
-                b1.label(text=f"{dlc_type[dlc_number]}")
-                b1.label(text=f"{dlc_author[dlc_number]}")
-                b1.label(text=f"{dlc_date[dlc_number]}")
-            except:
-                b1.label(text="REFRESH")
+        try:
+            selected_dlc = getattr(obj,"dlc_list")
+            dlc_number = GetListIndex(str(selected_dlc), dlc_id)
+            
+            b1.label(text=f"{dlc_type[dlc_number]}", icon ='FILE_BACKUP')
+            b1.label(text=f"{dlc_author[dlc_number]}")
+            b1.label(text=f"{dlc_date[dlc_number]}")
+            b1 = box2.row(align=True)
+        except:
+            b1.label(text="REFRESH")
             b1 = box2.row(align=True)
 
 
 
 
-        b1 = box2.row(align=True)
         #end of box
         b = box.row(align=True)
         b.label(text = "Installed DLC:")
@@ -129,6 +145,7 @@ def downloads_UI(self, context, layout, obj):
             for dlc in getFiles(dlc_folder_preset):
                 b1 = box2.row(align=True)
                 b1.label(text = dlc, icon = 'FILE_BACKUP')
+
 
 classes = [
            ]

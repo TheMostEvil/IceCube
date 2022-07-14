@@ -141,15 +141,11 @@ def create_backup_func(self, context):
     if obj.get("backup_name"):
         if obj.get("backup_name") == "":
             backups_folder = os.path.dirname(backups_folder)+"/backups/main"
-            if os.path.exists(backups_folder):
-                pass
-            else:
+            if os.path.exists(backups_folder) is False:
                 os.mkdir(backups_folder)
         else:
             backups_folder = os.path.dirname(backups_folder)+"/backups/"+backup_name
-            if os.path.exists(backups_folder):
-                pass
-            else:
+            if os.path.exists(backups_folder) is False:
                 os.mkdir(backups_folder)
     else:
         backups_folder = os.path.dirname(backups_folder)+"/backups/main"
@@ -206,7 +202,9 @@ def create_backup_func(self, context):
         CustomErrorBox(f"Created Backup: [{backup_name}]", "Created Backup", 'INFO')
     except:
         CustomErrorBox(f"An Error Has Occured: [{backup_name}]", "Unknown Error", 'ERROR')
-        
+    
+    downloads_path = f"{root_folder}/ice_cube_data/ui/advanced/downloads.py"
+    exec(open(downloads_path).read())
 
     return{'FINISHED'}
 
@@ -214,8 +212,8 @@ def load_backup_func(self, context):
     #set up the variables
     obj = context.object
     virtual_ice_cube = root_folder+""
-    backup_name = obj.backup_name
-    backups_folder = root_folder+"/backups/"+backup_name
+    selected_backup = getattr(obj,"backups_list")
+    backups_folder = root_folder+"/backups/"+selected_backup
     #check if you've entered a backup name, if not, give a prompt, if so, check if that folder exists and create one if it doesn't exist.
     if obj.get("backup_name"):
         if obj.get("backup_name") == "":
@@ -223,7 +221,7 @@ def load_backup_func(self, context):
         else:
             if os.path.exists(backups_folder):
                 distutils.dir_util.copy_tree(backups_folder, virtual_ice_cube)
-                CustomErrorBox(f"Loaded Backup: [{backup_name}], restart Blender for changes!", "Loaded Backup", 'INFO')
+                CustomErrorBox(f"Loaded Backup: [{selected_backup}], restart Blender for changes!", "Loaded Backup", 'INFO')
             else:
                 CustomErrorBox("INVALID BACKUP","Selection Error",'ERROR')
     else:
@@ -239,90 +237,83 @@ def delete_backup_func(self, context):
         virtual_ice_cube = os.path.normpath(virtual_ice_cube)
         backups_folder = root_folder+"/backups"
 
-        backup_name = obj.backup_name
+        selected_backup = getattr(obj,"backups_list")
         #check if you've entered a name, if not, give a prompt, if so, delete the entered name if a backup exists for it
-        if obj.get("backup_name"):
-            if obj.get("backup_name") == "":
-                CustomErrorBox("Please enter the name of a backup!","Selection Error",'ERROR')
-            else:
-                backup_to_remove = os.path.dirname(backups_folder)+"/backups/"+backup_name
-                if os.path.exists(backup_to_remove):
-                    shutil.rmtree(backup_to_remove)
-                    CustomErrorBox(f"Deleted Backup: [{backup_name}]", "Deleted Backup", 'INFO')
-                else:
-                    CustomErrorBox("Invalid Backup","Selection Error",'ERROR')
+        backup_to_remove = os.path.dirname(backups_folder)+"/backups/"+selected_backup
+        if os.path.exists(backup_to_remove) and backup_to_remove != backups_folder and backup_to_remove != backups_folder+"/":
+            shutil.rmtree(backup_to_remove)
+            CustomErrorBox(f"Deleted Backup: [{selected_backup}]", "Deleted Backup", 'INFO')
         else:
-            CustomErrorBox("Please enter the name of a backup!","Selection Error",'ERROR')
+            CustomErrorBox("No backup found!","Invalid Backup",'ERROR')
+
+        downloads_path = f"{root_folder}/ice_cube_data/ui/advanced/downloads.py"
+        exec(open(downloads_path).read())
 
         return{'FINISHED'}
 
 def download_dlc_func(self, context, dlc_id):
         obj = context.object
-        dlc_textbox = obj.dlc_name_load
+        selected_dlc = getattr(obj,"dlc_list")
+        if selected_dlc == "":
+            CustomErrorBox("Select a valid DLC!","INVALID DLC",'ERROR')
+            return{'FINISHED'}
         #gets the latest data from the github "dlc_list.json" file
         github_repo = json.loads(request.urlopen(latest_dlc).read().decode())
         #checks if you entered the name of a valid DLC
-        if obj.get("dlc_name_load"):
-            if obj.get("dlc_name_load") == "":
-                #gives an error if you didn't enter the name of a valid DLC
-                CustomErrorBox("Please enter the name of a DLC","Selection Error",'ERROR')
+        try:
+            #sets up variables depending on what is entered in the textbox
+            for dlc in github_repo:
+                dlc_number = getIndexCustom(selected_dlc,dlc_id)
+                dlc_type = github_repo[dlc_number]['dlc_type']
+                dlc_id_name = github_repo[dlc_number]['dlc_id']
+                dlc_download = github_repo[dlc_number]['download_link']
+                downloads_folder = root_folder+"/downloads"
+                dlc_folder = root_folder+"/ice_cube_data/internal_files/user_packs/"+dlc_type+"/"+dlc_id_name
+            #checks if a folder for the selected dlc exists, if not, create one.
+            if os.path.exists(dlc_folder):
+                print("Path Found")
             else:
+                os.mkdir(dlc_folder)
+                print(f"Created {dlc_id_name} Folder")
+            download_folder = os.path.normpath(downloads_folder)
+            #clear folder
+            ClearDirectory(download_folder)
+            
+            download_file_loc = str(download_folder+"/dlc.zip")
+
+            #download the zip
+            try:
+                request.urlretrieve(dlc_download, download_file_loc)
+                print("File Downloaded!")
+            except:
+                CustomErrorBox("An unknown error has occured, canceled download.","Downloading Error","ERROR")
+            #unzips the file
+            try:
+                print(f"Unzipping File")
                 try:
-                    #sets up variables depending on what is entered in the textbox
-                    for dlc in github_repo:
-                        dlc_number = getIndexCustom(dlc_textbox,dlc_id)
-                        dlc_type = github_repo[dlc_number]['dlc_type']
-                        dlc_id_name = github_repo[dlc_number]['dlc_id']
-                        dlc_download = github_repo[dlc_number]['download_link']
-                        downloads_folder = root_folder+"/downloads"
-                        dlc_folder = root_folder+"/ice_cube_data/internal_files/user_packs/"+dlc_type+"/"+dlc_id_name
-                    #checks if a folder for the selected dlc exists, if not, create one.
-                    if os.path.exists(dlc_folder):
-                        print("Path Found")
-                    else:
-                        os.mkdir(dlc_folder)
-                        print(f"Created {dlc_id_name} Folder")
-                    download_folder = os.path.normpath(downloads_folder)
-                    #clear folder
-                    ClearDirectory(download_folder)
-                    
-                    download_file_loc = str(download_folder+"/dlc.zip")
-
-                    #download the zip
-                    try:
-                        request.urlretrieve(dlc_download, download_file_loc)
-                        print("File Downloaded!")
-                    except:
-                        CustomErrorBox("An unknown error has occured, canceled download.","Downloading Error","ERROR")
-                    #unzips the file
-                    try:
-                        print(f"Unzipping File")
-                        try:
-                            shutil.rmtree(download_folder+"/"+dlc_id_name)
-                        except:
-                            pass
-                        with zipfile.ZipFile(download_file_loc, 'r') as zip_ref:
-                            zip_ref.extractall(download_folder)
-                        print("Successfully Unzipped File!")
-                        #remove the zip file when done
-                        os.remove(download_file_loc)
-                        print("Cleaned Folder")
-                    except:
-                        print("Unknown Error")
-                    
-                    try:
-                        #install the new DLC
-                        distutils.dir_util.copy_tree(download_folder+"/"+dlc_id_name, dlc_folder)
-                        print("Finished Install!")
-                        CustomErrorBox("Finished installing DLC! Restart Blender before continuing!","Updated Finished",'INFO')
-                    except:
-                        print("Error Completing Install.")
-                        CustomErrorBox("Error Completing Install.","Updated Cancelled",'ERROR')
-
+                    shutil.rmtree(download_folder+"/"+dlc_id_name)
                 except:
-                    CustomErrorBox("Invalid DLC","Selection Error",'ERROR')
-        else:
-            CustomErrorBox("Please enter the name of a DLC","Selection Error",'ERROR')
+                    pass
+                with zipfile.ZipFile(download_file_loc, 'r') as zip_ref:
+                    zip_ref.extractall(download_folder)
+                print("Successfully Unzipped File!")
+                #remove the zip file when done
+                os.remove(download_file_loc)
+                print("Cleaned Folder")
+            except:
+                print("Unknown Error")
+            
+            try:
+                #install the new DLC
+                distutils.dir_util.copy_tree(download_folder+"/"+dlc_id_name, dlc_folder)
+                print("Finished Install!")
+                CustomErrorBox("Finished installing DLC! Restart Blender before continuing!","Updated Finished",'INFO')
+            except:
+                print("Error Completing Install.")
+                CustomErrorBox("Error Completing Install.","Updated Cancelled",'ERROR')
+
+        except:
+            CustomErrorBox("Invalid DLC","Selection Error",'ERROR')
 
         return{'FINISHED'}
 

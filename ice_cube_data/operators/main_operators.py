@@ -314,6 +314,9 @@ class refresh_dlc(bpy.types.Operator):
         refresh_dlc_func(self, context)
 
         print(f"DLC IDs : {dlc_id}\nDLC TYPE : {dlc_type}\nDLC AUTHOR : {dlc_author}")
+        downloads_path = f"{root_folder}/ice_cube_data/ui/advanced/downloads.py"
+        exec(open(downloads_path).read())
+        
         return{'FINISHED'}
 
 class download_dlc(bpy.types.Operator):
@@ -345,6 +348,17 @@ class import_settings_data_class(bpy.types.Operator):
 
     def execute(self,context):
         import_settings_data(self, context)
+        return{'FINISHED'}
+
+class update_backups_list(bpy.types.Operator):
+    """Updates the list of current backups!"""
+    bl_idname = "update.backups"
+    bl_label = "Update Backups"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self,context):
+        downloads_path = f"{root_folder}/ice_cube_data/ui/advanced/downloads.py"
+        exec(open(downloads_path).read())
         return{'FINISHED'}
 
 
@@ -390,6 +404,7 @@ classes = [
     download_dlc,
     export_settings_data_class,
     import_settings_data_class,
+    update_backups_list,
            ]
 
 def register():

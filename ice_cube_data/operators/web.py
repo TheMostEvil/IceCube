@@ -2,7 +2,7 @@ from urllib import request
 import bpy
 import json
 
-from ice_cube import root_folder, github_url,latest_dlc ,dlc_id,dlc_type,dlc_author,dlc_date, bl_info
+from ice_cube import root_folder, github_url,latest_dlc ,dlc_id,dlc_type,dlc_author,dlc_date,dlc_enum_data, bl_info
 
 from ice_cube_data.utils.general_func import IsVersionUpdated, getIndexCustom
 from ice_cube_data.utils.ui_tools import CustomErrorBox
@@ -54,12 +54,14 @@ def refresh_dlc_func(self, context):
         dlc_type.clear()
         dlc_author.clear()
         dlc_date.clear()
+        dlc_enum_data.clear()
         for dlc in github_repo:
             dlc_number = getIndexCustom(str(dlc), github_repo)
             dlc_id.append(github_repo[dlc_number]['dlc_id'])
             dlc_type.append(github_repo[dlc_number]['dlc_type'])
             dlc_author.append(github_repo[dlc_number]['author'])
             dlc_date.append(github_repo[dlc_number]['dlc_date'])
+            dlc_enum_data.append(tuple(github_repo[dlc_number]['dlc_enum_data']))
 
         return{'FINISHED'}
 

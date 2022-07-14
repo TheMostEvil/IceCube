@@ -22,6 +22,7 @@ dlc_id = []
 dlc_type = []
 dlc_author = []
 dlc_date = []
+dlc_enum_data = []
 update_available = False
 
 #Folder Creation

@@ -31,6 +31,8 @@ def advanced_misc_UI(self, context, layout, obj):
             bs1.operator("import.settings", text="Import from Clipboard")
         else:
             bs1.operator("import.settings", text="Import from File")
+    bs1 = box_sub_1.row(align=True)
+    bs1.operator("reset.settings", text="Reset to Default")
 
 classes = [
            ]

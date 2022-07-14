@@ -409,6 +409,28 @@ def import_settings_data(self, context):
 
     return{'FINISHED'}
 
+def reset_all_settings_func(self, context):
+    obj = context.object
+
+    settings_json_data = ""
+    settings_name = ""
+    prop_data = ""
+
+    settings_json_data = open_json(f"{root_folder}/ice_cube_data/internal_files/default_settings.ice_cube_data")
+    
+    prop_data = settings_json_data['prop_data']
+
+    for prop in prop_data:
+        try:
+            setattr(obj, prop, prop_data[prop])
+            print(f"{prop} == {prop_data[prop]}")
+        except:
+            pass
+    CustomErrorBox(f"Successfully reset settings data!\nInteract with the scene to update!","Imported Settings",'INFO')
+        
+
+    return{'FINISHED'}
+
 
 classes = [
            ]

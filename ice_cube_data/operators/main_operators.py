@@ -16,7 +16,7 @@ from ice_cube_data.utils.web_tools import CustomLink
 #Operator Functions
 from .append import append_preset_func, append_default_rig, append_emotion_line_func
 from .parenting import parent_left_arm, parent_right_arm, parent_right_leg, parent_left_leg, parent_body_func, parent_head_func
-from .os_management import open_user_packs, install_update_func, create_backup_func, load_backup_func, delete_backup_func, download_dlc_func, export_settings_data, import_settings_data
+from .os_management import open_user_packs, install_update_func, create_backup_func, load_backup_func, delete_backup_func, download_dlc_func, export_settings_data, import_settings_data, reset_all_settings_func
 from .web import check_for_updates_func, refresh_dlc_func
 
 
@@ -346,6 +346,16 @@ class update_backups_list(bpy.types.Operator):
         exec(open(downloads_path).read())
         return{'FINISHED'}
 
+class reset_all_settings(bpy.types.Operator):
+    """Updates the list of current backups!"""
+    bl_idname = "reset.settings"
+    bl_label = "Update Backups"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self,context):
+        reset_all_settings_func(self,context)
+        return{'FINISHED'}
+
 
 try:
     bpy.types.Scene.selected_asset = EnumProperty(
@@ -389,6 +399,7 @@ classes = [
     export_settings_data_class,
     import_settings_data_class,
     update_backups_list,
+    reset_all_settings,
            ]
 
 def register():

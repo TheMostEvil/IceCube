@@ -5,7 +5,7 @@
         "dlc_type" : "rigs",
         "dlc_date" : "2022-6-3",
         "author" : "DarthLilo",
-        "dlc_enum_data" : ["lilo","Lilo Preset","A preset of DarthLilo"],
+        "dlc_enum_data" : ["lilo_preset","Lilo Preset","A preset of DarthLilo"],
         "download_link" : "https://www.dropbox.com/s/hz7i7qd1n501ono/lilo_preset.zip?dl=1"
     },
     {
@@ -14,7 +14,7 @@
         "dlc_type" : "rigs",
         "dlc_date" : "2022-6-4",
         "author" : "IC Beta Testers",
-        "dlc_enum_data" : ["beta","Beta DLC","A preset pack containing some members of the beta testing team"],
+        "dlc_enum_data" : ["beta_tester_dlc","Beta DLC","A preset pack containing some members of the beta testing team"],
         "download_link" : "https://www.dropbox.com/s/f3dhnsfkjhq0n7z/beta_tester_dlc.zip?dl=1"
     },
     {
@@ -23,7 +23,7 @@
         "dlc_type" : "inventory",
         "dlc_date" : "2022-6-3",
         "author" : "DarthLilo",
-        "dlc_enum_data" : ["3d_armor","3D Armor","An asset pack containing 3D Armor meshes"],
+        "dlc_enum_data" : ["3D_Armor","3D Armor","An asset pack containing 3D Armor meshes"],
         "download_link" : "https://www.dropbox.com/s/u668hpux9pblie6/3D_Armor.zip?dl=1"
     }
 ]

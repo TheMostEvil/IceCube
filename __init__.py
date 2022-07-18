@@ -16,8 +16,8 @@ import os
 
 #File Variables
 root_folder = os.path.dirname(os.path.abspath(__file__))
-github_url = "https://api.github.com/repos/TheMostEvil/IceCube/releases/latest"
-latest_dlc = "https://raw.githubusercontent.com/TheMostEvil/IceCube/master/ice_cube_data/dlc_list.json"
+github_url = "https://api.github.com/repos/DarthLilo/Ice-Cube/releases/latest"
+latest_dlc = "https://raw.githubusercontent.com/DarthLilo/ice_cube/master/ice_cube_data/dlc_list.json"
 dlc_id = []
 dlc_type = []
 dlc_author = []
